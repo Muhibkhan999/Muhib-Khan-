@@ -89,16 +89,24 @@ export function SpatialGallery() {
                   transform: `translate(-50%,-50%) translateY(${i * STEP_Y}vw) rotateY(${i * STEP_DEG}deg) translateZ(clamp(260px,28vw,560px))`,
                 }}
               >
-                <video
-                  src={clip.src}
-                  poster={clip.poster}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="metadata"
-                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                />
+                {clip.src ? (
+                  <video
+                    src={clip.src}
+                    poster={clip.poster}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                  />
+                ) : (
+                  <img
+                    src={clip.poster}
+                    alt={`${w.client} preview`}
+                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                  />
+                )}
                 <span className="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-transparent" />
                 <span className="text-mono absolute left-3 top-3 text-[10px] text-paper/80">{w.n} / {w.year}</span>
                 <span className="text-display absolute bottom-3 left-3 text-lg text-paper md:text-xl">{w.client}.</span>
@@ -169,17 +177,32 @@ export function QuoteStage() {
         </a>
       </div>
       <div className="pointer-events-none absolute inset-0 hidden items-center justify-center md:flex">
-        {QUOTES.map((c, i) => (
-          <figure
-            key={c.who}
-            data-qs-card
-            className="absolute w-[26vw] rounded-[3px] border border-paper/40 bg-ink/80 p-6 backdrop-blur-sm will-change-transform"
-            style={{ zIndex: i % 2 ? 20 : 5 }}
-          >
-            <blockquote className="text-xl leading-snug">“{c.q}”</blockquote>
-            <figcaption className="text-mono mt-6 text-signal">— {c.who}</figcaption>
-          </figure>
-        ))}
+        {QUOTES.map((c, i) => {
+          const initials = c.who
+            .split(" ")
+            .map((n) => n[0])
+            .join("")
+            .slice(0, 2)
+            .toUpperCase();
+          return (
+            <figure
+              key={c.who}
+              data-qs-card
+              className="group absolute w-[26vw] rounded-[3px] border border-paper/30 bg-ink/80 p-6 shadow-[0_24px_48px_-12px_hsl(0_0%_0%/0.45)] ring-1 ring-paper/5 backdrop-blur-sm transition-all duration-500 ease-out will-change-transform"
+              style={{ zIndex: i % 2 ? 20 : 5 }}
+            >
+              <div className="mb-4 flex items-center gap-3">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-signal/15 text-[10px] font-medium text-signal ring-1 ring-signal/30">
+                  {initials}
+                </span>
+                <figcaption className="text-mono text-xs text-paper/50">— {c.who}</figcaption>
+              </div>
+              <blockquote className="text-display text-xl leading-snug text-paper">
+                “{c.q}”
+              </blockquote>
+            </figure>
+          );
+        })}
       </div>
     </section>
   );

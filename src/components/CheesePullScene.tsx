@@ -15,7 +15,7 @@ const THREADS = [
   { y: .02, z: .50, radius: .32, snap: .81 },
   { y: -.06, z: -.28, radius: .24, snap: .76 },
 ];
-function distance(p: number) { return .78 + clamp((p - .08) / .73) * 2.40 + clamp((p - .81) / .19) * .5; }
+function distance(p: number) { return .72 + clamp((p - .08) / .73) * 2.40 + clamp((p - .81) / .19) * .5; }
 
 // A sculpted, asymmetric mass; the inner edge stretches from the same local
 // coordinates as the filaments, so their roots remain buried in the surface.
@@ -89,7 +89,6 @@ function Filament({ index, progress, material }: { index: number; progress: Prog
 }
 function Sculpture({ progress, onReady }: { progress: ProgressRef; onReady: () => void }) {
   const left = useRef<THREE.Mesh>(null), right = useRef<THREE.Mesh>(null);
-  const group = useRef<THREE.Group>(null);
   const ready = useRef(false);
   const bodies = useMemo(() => [makeBody(-1), makeBody(1)], []);
   const material = useMemo(() => new THREE.MeshPhysicalMaterial({ roughness: .28, metalness: 0, clearcoat: .7, clearcoatRoughness: .22, sheen: .25, side: THREE.DoubleSide }), []);
@@ -115,17 +114,12 @@ function Sculpture({ progress, onReady }: { progress: ProgressRef; onReady: () =
       pos.needsUpdate = true;
       mesh.geometry.computeVertexNormals();
     }
-    if (group.current) {
-      const dt = Math.min(rawDelta, .05);
-      group.current.rotation.y = THREE.MathUtils.damp(group.current.rotation.y, state.pointer.x * .10, 4, dt);
-      group.current.rotation.x = THREE.MathUtils.damp(group.current.rotation.x, -state.pointer.y * .06, 4, dt);
-    }
   });
-  return <group ref={group}>
+  return <>
     <mesh ref={left} geometry={bodies[0]} material={material} frustumCulled={false} />
     <mesh ref={right} geometry={bodies[1]} material={material} rotation-x={.12} frustumCulled={false} />
     {THREADS.map((_, i) => <Filament key={i} index={i} progress={progress} material={material} />)}
-  </group>;
+  </>;
 }
 function Framing() {
   const { camera, size } = useThree();

@@ -427,7 +427,7 @@ function WorksHorizontal() {
 
         // Intro: the first frame opens from a small window to full bleed.
         tl.fromTo(layers[0], { clipPath: "inset(30% 34% 30% 34% round 3px)" }, { clipPath: "inset(0% 0% 0% 0% round 0px)", ease: "power2.inOut" }, 0)
-          .fromTo(layers[0].querySelector("video"), { scale: 1.35 }, { scale: 1, ease: "power2.out" }, 0)
+          .fromTo(layers[0].querySelector("video, img"), { scale: 1.35 }, { scale: 1, ease: "power2.out" }, 0)
           .fromTo("[data-cine-intro]", { opacity: 1, y: 0 }, { opacity: 0, y: -80, ease: "power1.in", duration: 0.8 }, 0.3);
 
         layers.forEach((layer, i) => {
@@ -436,8 +436,8 @@ function WorksHorizontal() {
           if (i === layers.length - 1) return;
           const next = layers[i + 1];
           tl.fromTo(next, { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", ease: "power3.inOut", duration: 1 }, "+=0.4")
-            .fromTo(next.querySelector("video"), { scale: 1.4, yPercent: 12 }, { scale: 1, yPercent: 0, ease: "power3.out", duration: 1 }, "<")
-            .to(layer.querySelector("video"), { scale: 0.9, yPercent: -10, filter: "brightness(0.3)", ease: "power2.in", duration: 1 }, "<");
+            .fromTo(next.querySelector("video, img"), { scale: 1.4, yPercent: 12 }, { scale: 1, yPercent: 0, ease: "power3.out", duration: 1 }, "<")
+            .to(layer.querySelector("video, img"), { scale: 0.9, yPercent: -10, filter: "brightness(0.3)", ease: "power2.in", duration: 1 }, "<");
         });
         tl.to({}, { duration: 0.4 });
       });
@@ -460,16 +460,24 @@ function WorksHorizontal() {
               className="group absolute inset-0 block overflow-hidden"
               style={{ zIndex: i + 1, clipPath: i === 0 ? undefined : "inset(100% 0% 0% 0%)" }}
             >
-              <video
-                src={clip.src}
-                poster={clip.poster}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                className="absolute inset-0 h-full w-full object-cover will-change-transform"
-              />
+              {clip.src ? (
+                <video
+                  src={clip.src}
+                  poster={clip.poster}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  className="absolute inset-0 h-full w-full object-cover will-change-transform"
+                />
+              ) : (
+                <img
+                  src={clip.poster}
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-cover will-change-transform"
+                />
+              )}
               <span className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/10 to-ink/40" />
               <div className="absolute inset-x-6 bottom-10 flex items-end justify-between gap-8 md:inset-x-10 md:bottom-14 md:left-[18vw]">
                 <div>
