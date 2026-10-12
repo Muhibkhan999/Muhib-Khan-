@@ -278,16 +278,6 @@ Design a landing page in the style of Nothin’: use a white canvas, black edito
 
 - Home (https://noth.in/): contributed the core black/white palette usage, pill CTA styling, editorial layout rhythm, object-photography direction, and manifesto-like messaging structure
 
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/8cf5061a-b1ac-4fca-99a7-f3ba4ec8ca5e).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
 ## Development
 
 Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
